@@ -189,6 +189,9 @@ export default function CreateOrUpdateProductForm({
   }, [productName]);
 
   const slugAutoSuggest = formatSlug(watch('name'));
+  useEffect(() => {
+    setValue('slug', slugAutoSuggest);
+  }, [setValue, slugAutoSuggest]);
   if (Boolean(options?.isProductReview)) {
     if (permission) {
       if (initialValues?.status !== ProductStatus?.Draft) {

@@ -14,6 +14,7 @@ const nextConfig = {
   i18n,
   images: {
     domains: [
+      'pickbazzar-ecommerce.s3.amazonaws.com',
       'via.placeholder.com',
       'res.cloudinary.com',
       's3.amazonaws.com',
@@ -24,8 +25,8 @@ const nextConfig = {
       'pickbazar-sail.test',
       'pickbazarlaravel.s3.ap-southeast-1.amazonaws.com',
       'lh3.googleusercontent.com',
-      '127.0.0.1:8000', 
-      'how3-article-image.s3.amazonaws.com'
+      '127.0.0.1:8000',
+      'how3-article-image.s3.amazonaws.com',
     ],
   },
   ...(process.env.APPLICATION_MODE === 'production' && {

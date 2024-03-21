@@ -14,6 +14,6 @@ export const useUploadMutation = () => {
       onSettled: () => {
         queryClient.invalidateQueries(API_ENDPOINTS.SETTINGS);
       },
-    }
+    },
   );
 };

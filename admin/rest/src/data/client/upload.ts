@@ -6,17 +6,19 @@ export const uploadClient = {
   upload: async (variables: any) => {
     let formData = new FormData();
     variables.forEach((attachment: any) => {
-      formData.append('attachment[]', attachment);
+      formData.append('files', attachment);
     });
+
     const options = {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     };
+
     return HttpClient.post<Attachment>(
       API_ENDPOINTS.ATTACHMENTS,
       formData,
-      options
+      options,
     );
   },
 };

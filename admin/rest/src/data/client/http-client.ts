@@ -5,7 +5,7 @@ import invariant from 'tiny-invariant';
 
 invariant(
   process.env.NEXT_PUBLIC_REST_API_ENDPOINT,
-  'NEXT_PUBLIC_REST_API_ENDPOINT is not defined, please define it in your .env file'
+  'NEXT_PUBLIC_REST_API_ENDPOINT is not defined, please define it in your .env file',
 );
 const Axios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_REST_API_ENDPOINT,
@@ -44,7 +44,7 @@ Axios.interceptors.response.use(
       Router.reload();
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 function formatBooleanSearchParam(key: string, value: boolean) {
@@ -82,6 +82,7 @@ export class HttpClient {
 
   static async post<T>(url: string, data: unknown, options?: any) {
     const response = await Axios.post<T>(url, data, options);
+
     return response.data;
   }
 
@@ -111,7 +112,7 @@ export class HttpClient {
           ? `${k}.slug:${v}`
           : ['is_approved'].includes(k)
           ? formatBooleanSearchParam(k, v as boolean)
-          : `${k}:${v}`
+          : `${k}:${v}`,
       )
       .join(';');
   }

@@ -51,7 +51,7 @@ export type ProductTypeOption = {
   name: string;
 };
 export const productTypeOptions: ProductTypeOption[] = Object.entries(
-  ProductType
+  ProductType,
 ).map(([key, value]) => ({
   name: key,
   value,
@@ -97,16 +97,17 @@ export function calculateMinMaxPrice(variationOptions: any) {
 
 export function calculateQuantity(variationOptions: any) {
   return sum(
-    variationOptions?.map(({ quantity }: { quantity: number }) => quantity)
+    variationOptions?.map(({ quantity }: { quantity: number }) => quantity),
   );
 }
 
 export function getProductDefaultValues(
   product: Product,
-  isNewTranslation: boolean = false
+  isNewTranslation: boolean = false,
 ) {
   if (!product) {
     return {
+      slug: '',
       product_type: productTypeOptions[0],
       min_price: 0.0,
       max_price: 0.0,
@@ -131,8 +132,9 @@ export function getProductDefaultValues(
   } = product;
   return cloneDeep({
     ...product,
+
     product_type: productTypeOptions.find(
-      (option) => product_type === option.value
+      (option) => product_type === option.value,
     ),
     ...(product_type === ProductType.Simple && {
       ...(is_digital && {
@@ -195,12 +197,13 @@ export function filterAttributes(attributes: any, variations: any) {
 
 export function getCartesianProduct(values: any) {
   const formattedValues = values
-    ?.map((v: any) =>
-      v?.value?.map((a: any) => ({
-        name: v?.attribute?.name,
-        value: a?.value,
-        id: a?.id,
-      }))
+    ?.map(
+      (v: any) =>
+        v?.value?.map((a: any) => ({
+          name: v?.attribute?.name,
+          value: a?.value,
+          id: a?.id,
+        })),
     )
     .filter((i: any) => i !== undefined);
   if (isEmpty(formattedValues)) return [];
@@ -224,7 +227,7 @@ export function processFileWithName(file_input: any) {
 
 export function getProductInputValues(
   values: ProductFormValues,
-  initialValues: any
+  initialValues: any,
 ) {
   const {
     product_type,
@@ -233,6 +236,7 @@ export function getProductInputValues(
     author,
     manufacturer,
     image,
+
     is_digital,
     categories,
     tags,
@@ -276,13 +280,14 @@ export function getProductInputValues(
     variation_options: {
       upsert: [],
       delete: initialValues?.variation_options?.map(
-        (variation: Variation) => variation?.id
+        (variation: Variation) => variation?.id,
       ),
     },
     ...(product_type?.value === ProductType?.Variable && {
       quantity: calculateQuantity(variation_options),
-      variations: variations?.flatMap(({ value }: any) =>
-        value?.map(({ id }: any) => ({ attribute_value_id: id }))
+      variations: variations?.flatMap(
+        ({ value }: any) =>
+          value?.map(({ id }: any) => ({ attribute_value_id: id })),
       ),
       variation_options: {
         // @ts-ignore
@@ -312,16 +317,16 @@ export function getProductInputValues(
               ({ name, value }: VariationOption) => ({
                 name,
                 value,
-              })
+              }),
             ),
-          })
+          }),
         ),
         delete: initialValues?.variation_options
           ?.map((initialVariationOption: Variation) => {
             // @ts-ignore
             const find = variation_options?.find(
               (variationOption: Variation) =>
-                variationOption?.id === initialVariationOption?.id
+                variationOption?.id === initialVariationOption?.id,
             );
             if (!find) {
               return initialVariationOption?.id;
