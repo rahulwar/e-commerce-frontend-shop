@@ -82,8 +82,11 @@ export function calculateMinMaxPrice(variationOptions: any) {
       max_price: null,
     };
   }
+  console.log('variationOptions ', variationOptions);
   const sortedVariationsByPrice = orderBy(variationOptions, ['price']);
   const sortedVariationsBySalePrice = orderBy(variationOptions, ['sale_price']);
+  console.log('sortedVariationsByPrice ', sortedVariationsByPrice);
+  console.log('sortedVariationsBySalePrice ', sortedVariationsBySalePrice);
   return {
     min_price:
       sortedVariationsBySalePrice?.[0].sale_price <
@@ -197,17 +200,26 @@ export function filterAttributes(attributes: any, variations: any) {
 
 export function getCartesianProduct(values: any) {
   const formattedValues = values
-    ?.map(
-      (v: any) =>
-        v?.value?.map((a: any) => ({
+    ?.map((v: any) => {
+      if (Array.isArray(v?.value)) {
+        return v?.value?.map((a: any) => ({
           name: v?.attribute?.name,
           value: a?.value,
           id: a?.id,
-        })),
-    )
-    .filter((i: any) => i !== undefined);
+        }));
+      } else {
+        return {
+          name: v?.attribute?.name,
+          value: v?.value?.value,
+          id: v?.value?.id,
+        };
+      }
+    })
+    .flat(); // Use flat() to flatten the array of arrays into a single array
+
   if (isEmpty(formattedValues)) return [];
-  return cartesian(...formattedValues);
+
+  return formattedValues;
 }
 
 export function processFileWithName(file_input: any) {
@@ -246,6 +258,9 @@ export function getProductInputValues(
     in_flash_sale,
     ...simpleValues
   } = values;
+  console.log('simpleValues ', simpleValues);
+  console.log(values);
+
   // const { locale } = useRouter();
   // const router = useRouter();
   const processedFile = processFileWithName(digital_file_input);

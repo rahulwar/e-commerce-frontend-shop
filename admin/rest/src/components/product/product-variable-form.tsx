@@ -74,11 +74,14 @@ export default function ProductVariableForm({
     getValues,
     formState: { errors },
   } = useFormContext();
+
   const variations = useWatch({
     control,
     name: name,
   });
+
   const cartesianProduct = getCartesianProduct(getValues(name));
+
   return (
     <div className="my-5 flex flex-wrap sm:my-8">
       <Description
@@ -168,7 +171,7 @@ export default function ProductVariableForm({
               <Title className="mb-0 px-5 text-center text-lg uppercase md:px-8">
                 {cartesianProduct?.length} {t('form:total-variation-added')}
               </Title>
-              {cartesianProduct.map(
+              {cartesianProduct?.map(
                 (fieldAttributeValue: any, index: number) => {
                   return (
                     <div

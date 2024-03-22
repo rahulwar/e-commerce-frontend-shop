@@ -119,9 +119,18 @@ export default function CreateOrUpdateProductForm({
     control,
     setValue,
     setError,
+    getValues,
     watch,
     formState: { errors },
   } = methods;
+
+  // const watchAllFields = watch();
+
+  // Log the form values whenever any parameter changes
+  // useEffect(() => {
+  //   const formValues: ProductFormValues = getValues();
+  //   console.log('Form values:', formValues);
+  // }, [watchAllFields]);
 
   const upload_max_filesize = options?.server_info?.upload_max_filesize / 1024;
 
