@@ -214,6 +214,10 @@ export default function CreateOrUpdateCategoriesForm({
     });
   }, [generateName]);
 
+  useEffect(() => {
+    setValue('slug', slugAutoSuggest);
+  }, [setValue, slugAutoSuggest]);
+
   const { mutate: createCategory, isLoading: creating } =
     useCreateCategoryMutation();
   const { mutate: updateCategory, isLoading: updating } =
@@ -234,6 +238,7 @@ export default function CreateOrUpdateCategoriesForm({
       parent: values.parent?.id ?? null,
       type_id: values.type?.id,
     };
+
     if (
       !initialValues ||
       !initialValues.translated_languages.includes(router.locale!)

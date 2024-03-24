@@ -140,6 +140,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
     control,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     shouldUnregister: true,
@@ -325,6 +326,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
         },
       })),
     };
+    console.log(input);
 
     if (
       !initialValues ||
@@ -348,6 +350,10 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
     categories: category,
     status: 'publish',
   });
+
+  useEffect(() => {
+    setValue('slug', slugAutoSuggest);
+  }, [slugAutoSuggest, setValue]);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-wrap my-5 sm:my-8">

@@ -133,6 +133,7 @@ export function getProductDefaultValues(
     is_digital,
     digital_file,
   } = product;
+
   return cloneDeep({
     ...product,
 
@@ -258,8 +259,6 @@ export function getProductInputValues(
     in_flash_sale,
     ...simpleValues
   } = values;
-  console.log('simpleValues ', simpleValues);
-  console.log(values);
 
   // const { locale } = useRouter();
   // const router = useRouter();
