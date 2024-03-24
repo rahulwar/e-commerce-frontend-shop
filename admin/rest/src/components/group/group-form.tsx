@@ -326,14 +326,14 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
         },
       })),
     };
-    console.log(input);
 
     if (
-      !initialValues ||
-      !initialValues.translated_languages.includes(router.locale!)
+      !initialValues
+      //  || !initialValues.translated_languages.includes(router.locale!)
     ) {
       createType({
         ...input,
+        // @ts-ignore
         ...(initialValues?.slug && { slug: initialValues.slug }),
       });
     } else {

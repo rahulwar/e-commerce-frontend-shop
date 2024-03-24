@@ -20,6 +20,7 @@ export default function UpdateTypePage() {
     language:
       query.action!.toString() === 'edit' ? locale! : Config.defaultLanguage,
   });
+
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
   return (

@@ -1,4 +1,4 @@
-import Router,{ useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'next-i18next';
@@ -49,12 +49,13 @@ export const useUpdateTypeMutation = () => {
       const generateRedirectUrl = router.query.shop
         ? `/${router.query.shop}${Routes.type.list}`
         : Routes.type.list;
+
       await router.push(
         `${generateRedirectUrl}/${data?.slug}/edit`,
         undefined,
         {
           locale: Config.defaultLanguage,
-        }
+        },
       );
       toast.success(t('common:successfully-updated'));
     },
@@ -70,7 +71,7 @@ export const useUpdateTypeMutation = () => {
 
 export const useTypeQuery = ({ slug, language }: GetParams) => {
   return useQuery<Type, Error>([API_ENDPOINTS.TYPES, { slug, language }], () =>
-    typeClient.get({ slug, language })
+    typeClient.get({ slug, language }),
   );
 };
 
@@ -81,7 +82,7 @@ export const useTypesQuery = (options?: Partial<TypeQueryOptions>) => {
       typeClient.all(Object.assign({}, queryKey[1], pageParam)),
     {
       keepPreviousData: true,
-    }
+    },
   );
 
   return {
