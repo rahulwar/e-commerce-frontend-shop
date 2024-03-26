@@ -143,7 +143,7 @@ const defaultValues = {
   details: '',
   parent: '',
   icon: '',
-  type: '',
+  type: {},
 };
 
 type IProps = {
@@ -172,6 +172,7 @@ export default function CreateOrUpdateCategoriesForm({
   } = useForm<FormValues>({
     // shouldUnregister: true,
     //@ts-ignore
+
     defaultValues: initialValues
       ? {
           ...initialValues,
@@ -239,12 +240,15 @@ export default function CreateOrUpdateCategoriesForm({
       type_id: values.type?.id,
     };
 
+    console.log(input);
+
     if (
-      !initialValues ||
-      !initialValues.translated_languages.includes(router.locale!)
+      !initialValues
+      // !initialValues.translated_languages.includes(router.locale!)
     ) {
       createCategory({
         ...input,
+        // @ts-ignore
         ...(initialValues?.slug && { slug: initialValues.slug }),
       });
     } else {
