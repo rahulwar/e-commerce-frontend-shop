@@ -29,7 +29,7 @@ import { join, split } from 'lodash';
 import omit from 'lodash/omit';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import OpenAIButton from '../openAI/openAI.button';
 import { useAtom } from 'jotai';
@@ -160,6 +160,9 @@ const ShopForm = ({ initialValues }: { initialValues?: any }) => {
     control,
     name: 'settings.socials',
   });
+  useEffect(() => {
+    setValue('slug', slugAutoSuggest);
+  }, [setValue, slugAutoSuggest]);
 
   const [isSlugDisable, setIsSlugDisable] = useState<boolean>(true);
   const isSlugEditable =
