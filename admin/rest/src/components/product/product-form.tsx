@@ -144,8 +144,6 @@ export default function CreateOrUpdateProductForm({
       language: router.locale,
       ...getProductInputValues(values, initialValues),
     };
-    console.log('input values', inputValues);
-    return;
 
     try {
       if (
