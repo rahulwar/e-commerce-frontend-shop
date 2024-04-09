@@ -42,6 +42,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
   );
 
   const shopId = shopData?.id!;
+  const shopSlug = shopData?.slug!;
   const {
     register,
     handleSubmit,
@@ -62,20 +63,22 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
     useUpdateAttributeMutation();
   const onSubmit = (values: FormValues) => {
     if (
-      !initialValues ||
-      !initialValues.translated_languages.includes(router.locale!)
+      !initialValues
+      // ||
+      // !initialValues.translated_languages.includes(router.locale!)
     ) {
       createAttribute(
         {
           language: router.locale,
           name: values.name!,
-          shop_id: shopId ? Number(shopId) : Number(initialValues?.shop_id),
+          shop_id: shopId,
           values: values?.values.map(({ id, value, meta }: any) => ({
             language: router.locale,
             value,
             meta,
           })),
-          ...(initialValues?.slug && { slug: initialValues.slug }),
+          slug: shopSlug,
+          // ...(initialValues?.slug && { slug: initialValues.slug }),
         },
         {
           onError: (error: any) => {
@@ -88,7 +91,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
       updateAttribute({
         id: initialValues.id!,
         name: values.name!,
-        shop_id: Number(initialValues?.shop_id),
+        shop_id: initialValues?.shop_id,
         values: values.values.map(({ id, value, meta }: any) => ({
           language: router.locale,
           id: Number(id),
