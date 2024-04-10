@@ -60,7 +60,7 @@ function PopularProductCard({ product }: { product: Product }) {
           <h4 className="-mb-px truncate text-[15px] font-medium text-heading">
             {name}
           </h4>
-          <span className="text-[13px] text-body">{type.name}</span>
+          <span className="text-[13px] text-body">{type?.name}</span>
         </div>
       </div>
       {product_type === ProductType.Variable ? (
@@ -95,7 +95,7 @@ const PopularProductList = ({ products, title, className }: IProps) => {
     <div
       className={cn(
         'overflow-hidden rounded-lg bg-white p-6 md:p-7',
-        className
+        className,
       )}
     >
       <h3 className="before:content-'' relative mt-1 mb-6 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
