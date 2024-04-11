@@ -20,7 +20,7 @@ import { useCreateTagMutation, useUpdateTagMutation } from '@/data/tag';
 import { useTypesQuery } from '@/data/type';
 import OpenAIButton from '../openAI/openAI.button';
 import { useSettingsQuery } from '@/data/settings';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ItemProps } from '@/types';
 import { useModalAction } from '../ui/modal/modal.context';
 import { EditIcon } from '@/components/icons/edit';
@@ -141,7 +141,13 @@ export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
     language: locale!,
   });
 
-  const generateName = watch('name');
+  const generateName = formatSlug(watch('name'));
+  useEffect(() => {
+    if (!initialValues) {
+      setValue('slug', generateName);
+    }
+  }, [setValue, generateName]);
+
   const tagDetailSuggestionLists = useMemo(() => {
     return TagDetailSuggestions({ name: generateName ?? '' });
   }, [generateName]);

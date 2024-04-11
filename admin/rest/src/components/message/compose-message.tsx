@@ -104,7 +104,7 @@ const ComposeMessageModal = () => {
           <Button
             className="px-4 text-base "
             loading={creating}
-            disabled={!!creating || !shop || !Boolean(active)}
+            // disabled={!!creating || !shop || !Boolean(active)}
           >
             {t('text-start-conversation')}
           </Button>
