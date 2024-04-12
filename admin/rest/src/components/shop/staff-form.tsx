@@ -59,7 +59,7 @@ const AddStaffForm = () => {
         name,
         email,
         password,
-        shop_id: Number(shopId),
+        shop_id: shopId,
       },
       {
         onError: (error: any) => {
@@ -70,7 +70,7 @@ const AddStaffForm = () => {
             });
           });
         },
-      }
+      },
     );
   }
 

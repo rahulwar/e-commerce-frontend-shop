@@ -1500,7 +1500,7 @@ export declare type AddStaffInput = {
   email: string;
   password: string;
   name: string;
-  shop_id: number;
+  shop_id: string;
 };
 
 export declare type ApproveShopInput = {
