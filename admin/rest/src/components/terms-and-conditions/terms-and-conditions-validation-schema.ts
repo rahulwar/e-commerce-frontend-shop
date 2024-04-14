@@ -3,6 +3,7 @@ import { MAXIMUM_WORD_COUNT_FOR_RICH_TEXT_EDITOR } from '@/utils/constants';
 
 export const termsAndConditionsValidationSchema = yup.object().shape({
   title: yup.string().required('form:error-terms-title-required'),
+  slug: yup.string(),
   description: yup
     .string()
     .required('form:error-term-description-required')

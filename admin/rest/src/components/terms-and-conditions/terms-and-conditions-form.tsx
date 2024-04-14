@@ -12,7 +12,7 @@ import { getErrorMessage } from '@/utils/form-error';
 import { Config } from '@/config';
 import { getAuthCredentials } from '@/utils/auth-utils';
 import { useSettingsQuery } from '@/data/settings';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useModalAction } from '@/components/ui/modal/modal.context';
 import OpenAIButton from '@/components/openAI/openAI.button';
 import { ItemProps } from '@/types';
@@ -26,10 +26,12 @@ import {
 } from '@/data/terms-and-condition';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import RichTextEditor from '@/components/ui/wysiwyg-editor/editor';
+import { formatSlug } from '@/utils/use-slug';
 
 type FormValues = {
   title: string;
   description?: string;
+  slug: string;
 };
 
 type IProps = {
@@ -57,6 +59,7 @@ export default function CreateOrUpdateTermsAndConditionsForm({
       enabled: !!router.query.shop,
     },
   );
+  console.log('router', router.query.shop);
   const shopId = shopData?.id!;
 
   const {
@@ -103,6 +106,7 @@ export default function CreateOrUpdateTermsAndConditionsForm({
       language: router.locale,
       title: values.title,
       description: values.description,
+      slug: values.slug,
     };
 
     try {
@@ -122,12 +126,15 @@ export default function CreateOrUpdateTermsAndConditionsForm({
       // ...(initialValues?.id && { id: initialValues.id }),
 
       if (
-        !initialValues ||
-        !initialValues.translated_languages.includes(router.locale!)
+        !initialValues
+        // ||
+        // !initialValues.translated_languages.includes(router.locale!)
       ) {
         createTermsAndConditions({
           ...inputValues,
+          //@ts-ignore
           ...(initialValues?.slug && { slug: initialValues.slug }),
+          //@ts-ignore
           shop_id: shopId || initialValues?.shop_id,
         });
       } else {
@@ -147,6 +154,10 @@ export default function CreateOrUpdateTermsAndConditionsForm({
       });
     }
   };
+  const slugAutoSuggest = formatSlug(watch('title'));
+  useEffect(() => {
+    setValue('slug', slugAutoSuggest);
+  }, [slugAutoSuggest]);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="my-5 flex flex-wrap sm:my-8">
