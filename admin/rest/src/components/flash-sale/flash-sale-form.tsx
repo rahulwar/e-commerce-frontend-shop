@@ -47,9 +47,11 @@ import Alert from '@/components/ui/alert';
 import dayjs from 'dayjs';
 import ShopFilter from '@/components/filters/shop-filter';
 import RichTextEditor from '@/components/ui/wysiwyg-editor/editor';
+import { formatSlug } from '@/utils/use-slug';
 
 type FormValues = {
   title: string;
+  slug: string;
   description: string;
   start_date: string;
   end_date: string;
@@ -118,6 +120,7 @@ export default function CreateOrUpdateFlashSaleForm({ initialValues }: IProps) {
     watch,
     setError,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm<FormValues>({
     // @ts-ignore
@@ -138,6 +141,7 @@ export default function CreateOrUpdateFlashSaleForm({ initialValues }: IProps) {
       : {
           start_date: new Date(),
           type: FlashSaleType.PERCENTAGE,
+          slug: '',
           sale_builder: {
             data_type: 'handpicked_products',
           },
@@ -151,7 +155,14 @@ export default function CreateOrUpdateFlashSaleForm({ initialValues }: IProps) {
   const { mutate: updateFlashSale, isLoading: updating } =
     useUpdateFlashSaleMutation();
 
-  const flashSaleName = watch('title');
+  const flashSaleName = formatSlug(watch('title'));
+
+  useEffect(() => {
+    if (!initialValues) {
+      setValue('slug', flashSaleName);
+    }
+  }, [flashSaleName, setValue]);
+
   const autoSuggestionList = useMemo(() => {
     return chatbotAutoSuggestionForFlashSale({ name: flashSaleName ?? '' });
   }, [flashSaleName]);
@@ -208,6 +219,7 @@ export default function CreateOrUpdateFlashSaleForm({ initialValues }: IProps) {
     const inputValues = {
       language: router.locale,
       title: values.title,
+      slug: values.slug,
       description: values.description,
       image: values.image,
       cover_image: values.cover_image,
@@ -226,8 +238,9 @@ export default function CreateOrUpdateFlashSaleForm({ initialValues }: IProps) {
 
     try {
       if (
-        !initialValues ||
-        !initialValues.translated_languages.includes(router.locale!)
+        !initialValues
+        // ||
+        // !initialValues.translated_languages.includes(router.locale!)
       ) {
         createFlashSale({
           ...inputValues,
@@ -326,6 +339,14 @@ export default function CreateOrUpdateFlashSaleForm({ initialValues }: IProps) {
             variant="outline"
             className="mb-5"
             required
+          />
+          <Input
+            label={`${t('form:input-label-slug')}`}
+            {...register('slug')}
+            error={t(errors.slug?.message!)}
+            variant="outline"
+            className="mb-5"
+            disabled
           />
           <div className="relative">
             {/* {options?.useAi && (

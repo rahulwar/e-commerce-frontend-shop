@@ -180,6 +180,9 @@ export default function CreateOrUpdateManufacturerForm({
     control,
     name: 'socials',
   });
+  useEffect(() => {
+    setValue('slug', slugAutoSuggest);
+  }, [slugAutoSuggest]);
 
   const onSubmit = async (values: FormValues) => {
     const {
@@ -220,12 +223,14 @@ export default function CreateOrUpdateManufacturerForm({
     };
     try {
       if (
-        !initialValues ||
-        !initialValues.translated_languages.includes(router.locale!)
+        !initialValues
+        // ||
+        // !initialValues.translated_languages.includes(router.locale!)
       ) {
         createManufacturer({
           ...input,
           shop_id: shopId,
+          // @ts-ignore
           ...(initialValues?.slug && { slug: initialValues.slug }),
         });
       } else {

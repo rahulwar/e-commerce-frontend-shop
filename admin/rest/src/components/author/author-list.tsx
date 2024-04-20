@@ -43,7 +43,9 @@ const AuthorList = ({
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc
+        currentSortDirection === SortOrder.Desc
+          ? SortOrder.Asc
+          : SortOrder.Desc,
       );
       onOrder(column!);
 
@@ -92,7 +94,7 @@ const AuthorList = ({
       onHeaderCell: () => onHeaderClick('name'),
       render: (name: string, { image }: { image: Attachment }) => (
         <div className="flex items-center">
-          <Avatar name={name} src={image.thumbnail} />
+          {image && <Avatar name={name} src={image.thumbnail} />}
           <span className="whitespace-nowrap font-medium ms-2.5">{name}</span>
         </div>
       ),
@@ -163,7 +165,8 @@ const AuthorList = ({
 
   if (router?.query?.shop) {
     columns = columns?.filter(
-      (col) => col?.key !== 'approve' && col?.key !== 'actions'
+      (col) => col?.key !== 'approve',
+      // && col?.key !== 'actions'
     );
   }
 

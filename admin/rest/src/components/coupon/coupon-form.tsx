@@ -140,12 +140,14 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
 
     try {
       if (
-        !initialValues ||
-        !initialValues.translated_languages.includes(router.locale!)
+        !initialValues
+        // ||
+        // !initialValues.translated_languages.includes(router.locale!)
       ) {
         createCoupon({
           ...input,
           code: values.code,
+          //@ts-ignore
           ...(initialValues?.code && { code: initialValues.code }),
           shop_id: shopId,
         });
