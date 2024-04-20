@@ -78,7 +78,7 @@ export const OrderItems = ({
   const { t } = useTranslation('common');
   const { alignLeft, alignRight } = useIsRTL();
   const { openModal } = useModalAction();
-
+  
   const orderTableColumns = [
     {
       title: <span className="ltr:pl-20 rtl:pr-20">{t('text-item')}</span>,
@@ -96,7 +96,7 @@ export const OrderItems = ({
       align: 'center',
       width: 100,
       render: function renderQuantity(pivot: any) {
-        return <p className="text-base">{pivot.order_quantity}</p>;
+        return <p className="text-base">{pivot?.order_quantity}</p>;
       },
     },
     {
@@ -204,7 +204,7 @@ export const OrderItems = ({
       data={products as Product}
       rowKey={(record: any) =>
         record.pivot?.variation_option_id
-          ? record.pivot.variation_option_id
+          ? record.pivot?.variation_option_id
           : record.created_at
       }
       className="orderDetailsTable w-full"

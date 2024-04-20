@@ -17,10 +17,12 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { attributeValidationSchema } from '@/components/attribute/attribute.validation-schema';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
+import { formatSlug } from '@/utils/use-slug';
 
 type FormValues = {
-  name?: string | null;
+  name: string ;
   values: any;
+  slug:string;
 };
 
 type IProps = {
@@ -42,17 +44,21 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
   );
 
   const shopId = shopData?.id!;
-  const shopSlug = shopData?.slug!;
+  // const shopSlug = shopData?.slug!;
   const {
     register,
     handleSubmit,
+    watch,
     control,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: initialValues ? initialValues : { name: '', values: [] },
+    defaultValues: initialValues ? initialValues : { name: '', values: [],slug:'' },
     //@ts-ignore
     resolver: yupResolver(attributeValidationSchema),
   });
+
+  const slugAutoSuggest = formatSlug(watch('name'));
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'values',
@@ -77,8 +83,9 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
             value,
             meta,
           })),
-          slug: shopSlug,
-          // ...(initialValues?.slug && { slug: initialValues.slug }),
+          slug: slugAutoSuggest,
+          //@ts-ignore
+           ...(initialValues?.slug && { slug: initialValues.slug }),
         },
         {
           onError: (error: any) => {
@@ -92,6 +99,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
         id: initialValues.id!,
         name: values.name!,
         shop_id: initialValues?.shop_id,
+        slug:slugAutoSuggest,
         values: values.values.map(({ id, value, meta }: any) => ({
           language: router.locale,
           id: Number(id),
