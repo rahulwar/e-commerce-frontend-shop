@@ -124,14 +124,6 @@ export default function CreateOrUpdateProductForm({
     formState: { errors },
   } = methods;
 
-  // const watchAllFields = watch();
-
-  // Log the form values whenever any parameter changes
-  // useEffect(() => {
-  //   const formValues: ProductFormValues = getValues();
-  //   console.log('Form values:', formValues);
-  // }, [watchAllFields]);
-
   const upload_max_filesize = options?.server_info?.upload_max_filesize / 1024;
 
   const { mutate: createProduct, isLoading: creating } =
@@ -144,10 +136,6 @@ export default function CreateOrUpdateProductForm({
       language: router.locale,
       ...getProductInputValues(values, initialValues),
     };
-    console.log('before variations', values.variations);
-    console.log('before', values.variation_options);
-    console.log('variations opetio', inputValues.variation_options);
-    console.log('variations', inputValues.variations);
 
     try {
       if (
