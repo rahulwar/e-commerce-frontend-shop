@@ -299,10 +299,21 @@ export function getProductInputValues(
     },
     ...(product_type?.value === ProductType?.Variable && {
       quantity: calculateQuantity(variation_options),
-      variations: variations?.flatMap(
-        ({ value }: any) =>
-          value?.map(({ id }: any) => ({ attribute_value_id: id })),
-      ),
+      // variations: variations?.flatMap(
+      //   ({ value }: any) =>
+      //     value?.map(({ id }: any) => ({ attribute_value_id: id })),
+      // ),
+
+      variations: variations?.map((p) => {
+        return {
+          // @ts-ignore
+          attribute_id: p.attribute.id,
+          // @ts-ignore
+          value: p.value[0].value,
+          // @ts-ignore
+          meta: p.value[0].meta,
+        };
+      }),
       variation_options: {
         // @ts-ignore
         upsert: variation_options?.map(

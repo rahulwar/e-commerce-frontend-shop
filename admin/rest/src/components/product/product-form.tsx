@@ -144,6 +144,10 @@ export default function CreateOrUpdateProductForm({
       language: router.locale,
       ...getProductInputValues(values, initialValues),
     };
+    console.log('before variations', values.variations);
+    console.log('before', values.variation_options);
+    console.log('variations opetio', inputValues.variation_options);
+    console.log('variations', inputValues.variations);
 
     try {
       if (
