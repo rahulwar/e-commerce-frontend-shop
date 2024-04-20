@@ -91,7 +91,7 @@ export const PlaceOrderAction: React.FC<{
       //@ts-ignore
       products: available_items?.map((item) => formatOrderedProduct(item)),
       amount: subtotal,
-      coupon_id: Number(coupon?.id),
+      coupon_id: coupon?.id,
       discount: discount ?? 0,
       paid_total: total,
       sales_tax: verified_response?.total_tax,

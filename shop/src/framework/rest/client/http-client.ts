@@ -71,4 +71,15 @@ export class HttpClient {
       )
       .join(';');
   }
+
+  static formatSearchParamsTermAndConditions(params: Partial<SearchParamOptions>) {
+    return Object.entries(params)
+      .filter(([, value]) => Boolean(value))
+      .map(([k, v]) =>
+        ['type', 'categories', 'tags', 'author', 'manufacturer','shops'].includes(k)
+          ? `${k}:${v}`
+          : `${k}:${v}`
+      )
+      .join(';');
+  }
 }

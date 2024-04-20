@@ -512,7 +512,7 @@ class Client {
         {
           searchJoin: 'and',
           ...params,
-          search: HttpClient.formatSearchParams({
+          search: HttpClient.formatSearchParamsTermAndConditions({
             type,
             issued_by,
           }),

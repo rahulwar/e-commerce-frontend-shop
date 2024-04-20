@@ -76,6 +76,7 @@ export const getStaticProps: GetStaticProps<
     [API_ENDPOINTS.TYPES, { slug: pageType, language: locale }],
     ({ queryKey }: any) => client.types.get(queryKey[1])
   );
+
   const productVariables = {
     type: pageType,
     limit: PRODUCTS_PER_PAGE,
@@ -111,23 +112,32 @@ export const getStaticProps: GetStaticProps<
         )
     );
   }
+  const productResponse = await client.products.all({
+    limit: PRODUCTS_PER_PAGE,
+    type: pageType,
+    language: locale,
+  });
+
+  const products = productResponse.data; 
+
+  const layoutType = types.find((t) => t.slug === pageType)?.settings?.layoutType ?? 'default';
 
   const categoryVariables = {
     type: pageType,
     limit: CATEGORIES_PER_PAGE,
     language: locale,
-    parent:
-      types.find((t) => t.slug === pageType)?.settings.layoutType === 'minimal'
-        ? 'all'
-        : 'null',
+    parent: layoutType === 'minimal' ? 'all' : 'null',
   };
+  
   await queryClient.prefetchInfiniteQuery(
     [API_ENDPOINTS.CATEGORIES, categoryVariables],
     ({ queryKey }) =>
       client.categories.all(queryKey[1] as CategoryQueryOptions),
   );
+
   return {
     props: {
+      products, 
       variables: {
         popularProducts: popularProductVariables,
         products: productVariables,
@@ -141,14 +151,14 @@ export const getStaticProps: GetStaticProps<
         },
       },
       layout:
-        types.find((t) => t.slug === pageType)?.settings.layoutType ??
-        'default',
+        types.find((t) => t.slug === pageType)?.settings?.layoutType ?? 'default',
       ...(await serverSideTranslations(locale!, ['common', 'banner'])),
       dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
     },
     revalidate: 120,
-  };
+  };  
 };
+
 
 /* Fix : locales: 14kB,
 popularProducts: 30kB,
