@@ -245,7 +245,7 @@ export interface Attribute {
   name: string;
   slug: string;
   values: AttributeValue[];
-  shop_id?: number;
+  shop_id?: string;
   translated_languages: string[];
   language?: string;
 }
@@ -258,9 +258,10 @@ export interface AttributeValueInput {
 
 export interface CreateAttributeInput {
   name: string;
-  shop_id: number;
+  shop_id: string;
   language?: string;
   values: AttributeValueInput;
+  slug: string;
 }
 
 export interface AttributeValueCreateInput {
@@ -858,6 +859,7 @@ export interface CreateAuthorInput {
   is_approved?: boolean;
   language?: string;
   name: string;
+  slug?: string;
   quote?: string;
   shop_id?: string;
   socials?: ShopSocialInput[];

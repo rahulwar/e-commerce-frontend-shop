@@ -109,6 +109,7 @@ export default function CreateOrUpdateAuthorForm({ initialValues }: IProps) {
     { enabled: !!router.query.shop },
   );
   const shopId = shopData?.id!;
+  const shopslug = shopData?.slug!;
   const {
     register,
     handleSubmit,
@@ -146,6 +147,13 @@ export default function CreateOrUpdateAuthorForm({ initialValues }: IProps) {
   });
 
   const generateName = watch('name');
+
+  useEffect(() => {
+    if (!initialValues) {
+      setValue('slug', generateName);
+    }
+  }, [setValue, generateName]);
+
   const authorBioSuggestionList = useMemo(() => {
     return AuthorBioSuggestion({ name: generateName ?? '' });
   }, [generateName]);
@@ -206,15 +214,18 @@ export default function CreateOrUpdateAuthorForm({ initialValues }: IProps) {
     };
 
     try {
+      console.log(input);
       if (
-        !initialValues ||
-        !initialValues.translated_languages.includes(router.locale!)
+        !initialValues
+        //  ||
+        // !initialValues.translated_languages.includes(router.locale!)
       ) {
         createAuthor({
           ...input,
           shop_id: shopId,
-          ...(initialValues?.slug && { slug: initialValues.slug }),
         });
+
+        console.log(input);
       } else {
         updateAuthor({
           ...input,
