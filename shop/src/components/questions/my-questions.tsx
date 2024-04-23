@@ -42,7 +42,7 @@ function QuestionItem({ question }: { question: Question }) {
       <div className="mb-5 flex items-center space-x-4">
         <div className="relative h-10 w-10 overflow-hidden rounded border border-gray-200">
           <Image
-            src={product.image?.original ?? productPlaceholder}
+            src={product?.image?.original ?? productPlaceholder}
             fill
             sizes="(max-width: 768px) 100vw"
             alt={product?.name}
