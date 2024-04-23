@@ -5,6 +5,11 @@ import { useTranslation } from 'next-i18next';
 import { Form } from '@/components/ui/forms/form';
 import { useChangePassword } from '@/framework/user';
 import * as yup from 'yup';
+import client from 'src/framework/rest/client';
+import { API_ENDPOINTS } from 'src/framework/rest/client/api-endpoints';
+import { useQuery } from 'react-query';
+
+
 
 export const changePasswordSchema = yup.object().shape({
   oldPassword: yup.string().required('error-old-password-required'),
@@ -16,6 +21,8 @@ export const changePasswordSchema = yup.object().shape({
 });
 
 export default function ChangePasswordForm() {
+  const { data, isLoading } = useQuery([API_ENDPOINTS.USERS_ME], client.users.me);
+
   const { t } = useTranslation('common');
   const {
     mutate: changePassword,
@@ -24,10 +31,14 @@ export default function ChangePasswordForm() {
   } = useChangePassword();
 
   function onSubmit({ newPassword, oldPassword }: ChangePasswordUserInput) {
-    changePassword({
-      oldPassword,
-      newPassword,
-    });
+    if (!isLoading && data) {
+      const id = data.id;
+      changePassword({
+        oldPassword,
+        newPassword,
+        id
+      });
+    }
   }
 
   return (
