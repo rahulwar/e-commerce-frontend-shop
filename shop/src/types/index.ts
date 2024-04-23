@@ -738,6 +738,7 @@ export interface VerifyForgotPasswordUserInput {
 export interface ChangePasswordUserInput {
   oldPassword: string;
   newPassword: string;
+  id:string;
 }
 export interface UpdateEmailUserInput {
   email: string;
