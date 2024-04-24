@@ -42,6 +42,7 @@ export function formatVariantPrice({
     : null;
 
   const price = formatPrice({ amount, currencyCode, locale, fractions });
+  console.log("price in fromat",price);
   const basePrice = hasDiscount
     ? formatPrice({ amount: baseAmount, currencyCode, locale, fractions })
     : null;
@@ -59,7 +60,9 @@ export default function usePrice(data?: PriceProps | null) {
   const { amount, baseAmount, currencyCode = currency } = data ?? {};
   const locale = formation ?? siteSettings.defaultLanguage;
   const value = useMemo(() => {
-    if (typeof amount !== 'number' || !currencyCode) return '';
+    if (typeof amount != 'number' || !currencyCode){
+      return '';
+    }
 
     return baseAmount
       ? formatVariantPrice({
