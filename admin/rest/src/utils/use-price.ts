@@ -42,7 +42,6 @@ export function formatVariantPrice({
     : null;
 
   const price = formatPrice({ amount, currencyCode, locale, fractions });
-  console.log("price in fromat",price);
   const basePrice = hasDiscount
     ? formatPrice({ amount: baseAmount, currencyCode, locale, fractions })
     : null;
