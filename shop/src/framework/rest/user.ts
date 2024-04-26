@@ -80,6 +80,80 @@ export function useUser() {
   };
 }
 
+export function useAddress() {
+  const [isAuthorized] = useAtom(authorizationAtom);
+  const { setEmailVerified, getEmailVerified } = useToken();
+  const { emailVerified } = getEmailVerified();
+  const router = useRouter();
+
+  const { data, isLoading, error, isFetchedAfterMount } = useQuery(
+    [API_ENDPOINTS.USERS_ADDRESS],
+    client.users.address,
+    {
+      enabled: isAuthorized,
+      retry: false,
+      onSuccess: (data) => {
+        if (emailVerified === false) {
+          setEmailVerified(true);
+          router.reload();
+          return;
+        }
+      },
+      onError: (err) => {
+        if (axios.isAxiosError(err)) {
+          if (err?.response?.status === 409) {
+            setEmailVerified(false);
+            router.push(Routes.verifyEmail);
+            return;
+          }
+          if (router.pathname === Routes.verifyEmail) {
+            return;
+          }
+        }
+      },
+    },
+  );
+  return {
+    address: data,
+    isLoading,
+    error,
+    isAuthorized,
+    isFetchedAfterMount,
+  };
+}
+
+export const useCreateAddress = () => {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  return useMutation(client.users.createAddress, {
+    onSuccess: () => {
+      toast.success(t('common:successfully-updated'));
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.USERS_ME);
+      queryClient.invalidateQueries(API_ENDPOINTS.USERS);
+    },
+  });
+};
+
+export const useUpdateAddress = () => {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const { closeModal } = useModalAction();
+
+  return useMutation(client.users.updateAddress, {
+    onSuccess: () => {
+      toast.success(t('common:successfully-updated'));
+      closeModal();
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.USERS_ME);
+      queryClient.invalidateQueries(API_ENDPOINTS.USERS);
+    },
+  }); 
+};
+
 export const useDeleteAddress = () => {
   const { closeModal } = useModalAction();
   const queryClient = useQueryClient();

@@ -1,7 +1,7 @@
 import OrderNote from '@/components/checkout/order-note';
 import { getLayout } from '@/components/layouts/layout';
 import Seo from '@/components/seo/seo';
-import { useUser } from '@/framework/user';
+import { useAddress, useUser } from '@/framework/user';
 import { AddressType } from '@/framework/utils/constants';
 import { setNewAddress } from '@/lib/constants';
 import { billingAddressAtom, shippingAddressAtom } from '@/store/checkout';
@@ -32,7 +32,9 @@ const RightSideView = dynamic(
 export default function CheckoutPage() {
   const { t } = useTranslation();
   const { me } = useUser();
-  const { id, address, profile } = me ?? {};
+  const {address} = useAddress();
+  const { id, profile } = me ?? {};
+  
   const [newAddress, setAddress] = useAtom(setNewAddress);
   useEffect(() => {
     // @ts-ignore

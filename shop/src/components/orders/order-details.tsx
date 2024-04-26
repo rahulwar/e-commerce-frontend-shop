@@ -100,6 +100,8 @@ const OrderDetails = ({ order, loadingStatus }: Props) => {
     refund,
   }: any = order ?? {};
 
+  console.log("track no.",tracking_number);
+
   const { price: amount } = usePrice({
     amount: order?.amount,
   });

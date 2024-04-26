@@ -426,6 +426,13 @@ class Client {
         input,
       ),
     logout: () => HttpClient.post<boolean>(API_ENDPOINTS.USERS_LOGOUT, {}),
+    address: () => HttpClient.get<User>(API_ENDPOINTS.USERS_ADDRESS),
+    createAddress: (address: any) => {
+      return HttpClient.post<any>(API_ENDPOINTS.USERS_ADDRESS, address);
+    },
+    updateAddress: ({ id, input }: { id: string; input: any }) => {
+      return HttpClient.put<any>(`${API_ENDPOINTS.USERS_ADDRESS}/${id}`, input);
+    },
     deleteAddress: ({ id }: { id: string }) =>
       HttpClient.delete<boolean>(`${API_ENDPOINTS.USERS_ADDRESS}/${id}`),
     subscribe: (input: { email: string }) =>

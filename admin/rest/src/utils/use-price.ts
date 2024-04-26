@@ -59,7 +59,9 @@ export default function usePrice(data?: PriceProps | null) {
   const { amount, baseAmount, currencyCode = currency } = data ?? {};
   const locale = formation ?? siteSettings.defaultLanguage;
   const value = useMemo(() => {
-    if (typeof amount !== 'number' || !currencyCode) return '';
+    if (typeof amount != 'number' || !currencyCode){
+      return '';
+    }
 
     return baseAmount
       ? formatVariantPrice({

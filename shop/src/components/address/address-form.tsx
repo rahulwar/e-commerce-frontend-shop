@@ -10,7 +10,7 @@ import { useModalState } from '@/components/ui/modal/modal.context';
 import { Form } from '@/components/ui/forms/form';
 import { AddressType } from '@/framework/utils/constants';
 import { GoogleMapLocation } from '@/types';
-import { useUpdateUser } from '@/framework/user';
+import { useCreateAddress, useUpdateAddress } from '@/framework/user';
 import GooglePlacesAutocomplete from '@/components/form/google-places-autocomplete';
 import { useSettings } from '@/framework/settings';
 import { useAtom } from 'jotai';
@@ -178,40 +178,39 @@ export const AddressForm: React.FC<any> = ({
 export default function CreateOrUpdateAddressForm() {
   const { t } = useTranslation('common');
   const {
-    data: { customerId, address, type },
+    data: { id, address },
   } = useModalState();
-  const { mutate: updateProfile } = useUpdateUser();
+  const { mutate: createAddress } = useCreateAddress();
+  const { mutate: updateAddress } = useUpdateAddress();
+
   const [oldAddress, setAddress] = useAtom(setNewAddress);
-  const onSubmit = (values: FormValues) => {
+  
+  const onSubmit = async (values: FormValues) => {
     const formattedInput = {
-      id: address?.id,
-      // customer_id: customerId,
+      id: address?.id, // If address exists, use its ID for update
       title: values.title,
       type: values.type,
-      address: {
-        ...values.address,
-      },
+      address: { ...values.address },
       location: values.location,
-    };
-    updateProfile({
-      id: customerId,
-      address: [formattedInput],
-    });
-    // only for nest js address system
+    };    
+    if (address) {
+      await updateAddress({
+        id: address?.id,
+        input: [formattedInput],
+      });
+    } else {
+      await createAddress({
+        id: id,
+        input: [formattedInput],
+      });
+    }
+    
     setAddress([
       ...oldAddress.filter((i: any) => i?.id !== address?.id),
-      {
-        id: address?.id ? address?.id : new Date(),
-        // customer_id: customerId,
-        title: values.title,
-        type: values.type,
-        address: {
-          ...values.address,
-        },
-        location: values.location,
-      },
-    ] as any);
+      formattedInput,
+    ]);
   };
+
   return (
     <div className="min-h-screen p-5 bg-light sm:p-8 md:min-h-0 md:rounded-xl">
       <h1 className="mb-4 text-lg font-semibold text-center text-heading sm:mb-6">
@@ -221,14 +220,13 @@ export default function CreateOrUpdateAddressForm() {
         onSubmit={onSubmit}
         defaultValues={{
           title: address?.title ?? '',
-          type: address?.type ?? type,
+          type: address?.type ?? '',
           address: {
             city: address?.address?.city ?? '',
             country: address?.address?.country ?? '',
             state: address?.address?.state ?? '',
             zip: address?.address?.zip ?? '',
             street_address: address?.address?.street_address ?? '',
-            ...address?.address,
           },
           location: address?.location ?? '',
         }}

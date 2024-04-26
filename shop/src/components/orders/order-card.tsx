@@ -12,7 +12,7 @@ type OrderCardProps = {
 
 const OrderCard: React.FC<OrderCardProps> = ({ onClick, order, isActive }) => {
   const { t } = useTranslation('common');
-  const { id, order_status, created_at, delivery_time } = order;
+  const { tracking_number, order_status, created_at, delivery_time } = order;
   const { price: amount } = usePrice({
     amount: order?.amount,
   });
@@ -32,7 +32,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ onClick, order, isActive }) => {
       <div className="flex items-center justify-between border-b border-border-200 py-3 px-5 md:px-3 lg:px-5 ">
         <span className="flex shrink-0 text-sm font-bold text-heading ltr:mr-4 rtl:ml-4 lg:text-base">
           {t('text-order')}
-          <span className="font-normal">#{id}</span>
+          <span className="font-normal">#{tracking_number}</span>
         </span>
         <span
           // className="max-w-full truncate whitespace-nowrap rounded bg-blue-100 px-3 py-2 text-sm text-blue-500"
