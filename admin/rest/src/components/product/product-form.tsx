@@ -146,7 +146,9 @@ export default function CreateOrUpdateProductForm({
         //@ts-ignore
         createProduct({
           ...inputValues,
+          //@ts-ignore
           ...(initialValues?.slug && { slug: initialValues.slug }),
+          //@ts-ignore
           shop_id: shopId || initialValues?.shop_id,
         });
       } else {
@@ -192,6 +194,7 @@ export default function CreateOrUpdateProductForm({
 
   const slugAutoSuggest = formatSlug(watch('name'));
   useEffect(() => {
+    //@ts-ignore
     setValue('slug', slugAutoSuggest);
   }, [setValue, slugAutoSuggest]);
   if (Boolean(options?.isProductReview)) {
