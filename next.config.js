@@ -19,7 +19,7 @@ module.exports = {
       'localhost',
       '127.0.0.1',
       'i.pravatar.cc', 
-      'how3-article-image.s3.amazonaws.com'
+      "pickbazzar-ecommerce.s3.amazonaws.com"
     ],
   },
   ...(process.env.FRAMEWORK_PROVIDER === 'graphql' && {
