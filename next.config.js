@@ -18,8 +18,8 @@ module.exports = {
       'lh3.googleusercontent.com',
       'localhost',
       '127.0.0.1',
-      'i.pravatar.cc',
-      'pickbazzar-ecommerce.s3.amazonaws.com',
+      'i.pravatar.cc', 
+      "pickbazzar-ecommerce.s3.amazonaws.com"
     ],
   },
   ...(process.env.FRAMEWORK_PROVIDER === 'graphql' && {
